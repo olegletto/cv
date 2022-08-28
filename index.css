@@ -1,11 +1,7 @@
-/* @font-face {
+@font-face {
   font-family: "Glacial Indifference";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Glacial Indifference"),
-      url("/assets/Glacial_Indifference/GlacialIndifference-Regular.otf")
-      format("opentype");
-} */
+  src: url("/assets/Glacial_Indifference/GlacialIndifference-Regular.otf")
+}
 
 /* @font-face {
   font-family: "Tenor Sans";
@@ -15,9 +11,9 @@
     url("/assets/Tenor_Sans/TenorSans-Regular.ttf") format("truetype");
 } */
 
-/* body {
-  font-family: "TenorSans";
-} */
+body {
+  font-family: "Tenor Sans", sans-serif;
+}
 
 main {
   width: 1240px;
@@ -32,14 +28,16 @@ aside {
   flex: 3;
   height: 100%;
   background-color: #253439;
-  border: black 1px solid;
+  /* #303030 */
 }
 
 section {
   flex: 7;
-  height: 100%;
+  /* height: 100%; */
   background-color: #fdfdfd;
-  border: black 1px solid;
+  /* #f5f5f5 */
+  padding: 50px;
+  color: #253439;
 }
 
 .photo {
@@ -57,8 +55,7 @@ section {
 }
 
 .asideContent {
-  margin: 25px;
-  font-family: "Tenor Sans", sans-serif;
+  margin: 50px;
   color: #fdfdfd;
 }
 
@@ -67,6 +64,7 @@ section {
   font-size: 64px;
   letter-spacing: 5px;
   text-transform: uppercase;
+  margin-bottom: 30px;
 }
 
 .position {
@@ -76,5 +74,82 @@ section {
 }
 
 .summary {
-margin: 40px 0;
+  margin: 40px 0 80px 0;
+  font-size: 22px;
+  line-height: 200%;
+  font-family: "Roboto", sans-serif;
+}
+
+.summary ul {
+  margin: 0;
+}
+
+.chapterHeader {
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  /* margin-bottom: 80px; */
+}
+
+.lightDivider::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0px;
+  height: 2px;
+  background-color: #fdfdfd;
+}
+
+.lightDivider::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0px;
+  height: 2px;
+  background-color: #fdfdfd;
+  ;
+}
+
+.contactItemHeader {
+  margin-top: 50px;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.contactItem {
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+.contactItem a {
+  text-decoration: none;
+  color: #fdfdfd;
+
+}
+.darkDivider::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0px;
+  height: 2px;
+  background-color: #253439;
+  ;
+}
+
+.darkDivider::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0px;
+  height: 2px;
+  background-color: #253439;
+  ;
 }
