@@ -49,7 +49,7 @@ section {
 }
 
 .photo img {
-  height: 100%;
+  height: auto;
   width: auto;
   max-width: 100%;
 }
