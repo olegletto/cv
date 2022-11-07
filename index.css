@@ -49,9 +49,9 @@ section {
 }
 
 .photo img {
-  height: auto;
-  width: auto;
-  max-width: 100%;
+  min-height: auto;
+  min-width: auto;
+  align-self: flex-start;
 }
 
 .asideContent {
