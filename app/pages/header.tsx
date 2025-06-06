@@ -17,7 +17,7 @@ export default function Header({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -100 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full flex items-center justify-between py-2 px-10 bg-white/50 text-gray-800 shadow-xl ${font.className}`}
+      className={`fixed top-0 w-full flex items-center justify-between py-2 px-4 md:px-10 bg-white/50 text-gray-800 shadow-xl ${font.className}`}
     >
       <div className="text-xl font-bold">OLEG LABUNIN</div>
       <nav>
