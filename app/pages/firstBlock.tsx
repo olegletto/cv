@@ -8,9 +8,11 @@ import { useEffect, useRef } from "react";
 export default function FirstBlock({
   firstFont,
   secondFont,
+  isDark,
 }: {
   firstFont: NextFont;
   secondFont: NextFont;
+  isDark: boolean;
 }) {
   const [scope, animate] = useAnimate();
 
@@ -46,7 +48,11 @@ export default function FirstBlock({
     <motion.section
       className={`flex flex-col items-center justify-center min-h-screen p-10 overflow-hidden ${firstFont.className}`}
     >
-      <div className="w-full h-1/2 text-6xl md:text-9xl flex flex-col justify-start items-start ">
+      <div
+        className={`w-full h-1/2 text-6xl md:text-9xl ${
+          isDark ? "text-[#38bdf8]" : "text-[#0284c7]"
+        } flex flex-col justify-start items-start`}
+      >
         {"Oleg Labunin".split(" ").map((word, wordIndex) => (
           <motion.div
             key={wordIndex}
@@ -62,7 +68,7 @@ export default function FirstBlock({
             {word.split("").map((letter, index) => (
               <motion.span
                 key={index}
-                className="inline-block letter py-4"
+                className={`inline-block letter py-4`}
                 initial={{ y: 150 }}
                 animate={{ y: 0 }}
                 transition={{
@@ -77,19 +83,19 @@ export default function FirstBlock({
           </motion.div>
         ))}
       </div>
-      <div className={`${secondFont.className} self-start`}>
+      <div className={`${secondFont.className} self-start py-10 md:py-5`}>
         <div className={`relative whitespace-nowrap`}>
           <p
             ref={firstText}
-            className="relative m-0 text-[50px] md:text-[100px] pr-[50px]"
+            className="relative m-0 text-[30px] md:text-[70px] pr-[50px]"
           >
-            Frontend developer Frontend developer{" "}
+            Frontend developer React NextJS TypeScript{" "}
           </p>
           <p
             ref={secondText}
-            className="absolute m-0 text-[50px] md:text-[100px] pr-[50px] left-full top-0"
+            className="absolute m-0 text-[30px] md:text-[70px] pr-[50px] left-full top-0"
           >
-            Frontend developer Frontend developer{" "}
+            Frontend developer React NextJS TypeScript{" "}
           </p>
         </div>
       </div>
@@ -97,7 +103,15 @@ export default function FirstBlock({
         <motion.button
           onClick={onButtonClick}
           whileTap={{ scale: 0.8 }}
-          className={`rounded-full border px-6 py-2 transition-colors hover:bg-blue-100 ${secondFont.className}`}
+          whileHover={
+            isDark
+              ? { scale: 1.05, color: "#38bdf8" }
+              : { scale: 1.05, color: "#0284c7" }
+          }
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className={`rounded-full border px-6 py-2 cursor-pointer ${secondFont.className}`}
         >
           <span className="sr-only">Download CV</span>
           <span className="block h-8 overflow-hidden" aria-hidden>

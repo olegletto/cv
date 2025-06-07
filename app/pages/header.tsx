@@ -17,7 +17,9 @@ export default function Header({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -100 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full flex items-center justify-between py-2 px-4 md:px-10 bg-white/50 text-gray-800 shadow-xl ${font.className}`}
+      className={`fixed top-0 w-full flex items-center justify-between py-2 px-4 md:px-10 ${
+        isDark ? "shadow-md shadow-gray-500" : "shadow-md shadow-gray-300"
+      } shadow- ${font.className}`}
     >
       <div className="text-xl font-bold">OLEG LABUNIN</div>
       <nav>
@@ -51,7 +53,7 @@ export default function Header({
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsDark(!isDark)}
-              className={`p-2 ${isDark ? "text-white" : "text-gray-800"}`}
+              className={`p-2 `}
             >
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </motion.button>

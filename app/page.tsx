@@ -31,14 +31,18 @@ export default function Home() {
   return (
     <main
       className={`relative min-h-screen overflow-hidden ${
-        isDark ? "bg-[#005670]  text-[#74d2e7]" : "bg-white text-[#005670]"
+        isDark ? "bg-[#0f172a]  text-[#f8fafc]" : "bg-[#f8fafc] text-[#94a3b8]"
       } ${syncopate.className}`}
     >
       {showWelcomePage && <WelcomePage font={passion} />}
       {!showWelcomePage && (
         <>
           <Header font={syncopate} isDark={isDark} setIsDark={setIsDark} />
-          <FirstBlock firstFont={interBold} secondFont={victorMono} />
+          <FirstBlock
+            firstFont={interBold}
+            secondFont={victorMono}
+            isDark={isDark}
+          />
         </>
       )}
     </main>
