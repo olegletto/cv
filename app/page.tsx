@@ -19,7 +19,7 @@ const interBold = Inter({ subsets: ["latin"], weight: "900" });
 const victorMono = Victor_Mono({ subsets: ["latin"], weight: "600" });
 
 export default function Home() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [showWelcomePage, setShowWelcomePage] = useState(false);
 
   useEffect(() => {

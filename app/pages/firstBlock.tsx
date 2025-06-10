@@ -28,7 +28,7 @@ export default function FirstBlock({
     gsap.set(firstText.current, { xPercent: xPercent });
     gsap.set(secondText.current, { xPercent: xPercent });
     requestAnimationFrame(animation);
-    xPercent += 0.1 * direction;
+    xPercent += 0.05 * direction;
   };
   useEffect(() => {
     requestAnimationFrame(animation);
@@ -46,10 +46,13 @@ export default function FirstBlock({
   };
   return (
     <motion.section
-      className={`flex flex-col items-center justify-center min-h-screen p-10 overflow-hidden ${firstFont.className}`}
+      className={`flex flex-col items-start justify-center min-h-screen p-10 overflow-hidden ${firstFont.className}`}
     >
+      <h3 className={`${secondFont.className} text-sm mt-10`}>
+        Hi, my name is
+      </h3>
       <div
-        className={`w-full h-1/2 text-6xl md:text-9xl ${
+        className={`w-full h-1/2 text-4xl md:text-6xl ${
           isDark ? "text-[#38bdf8]" : "text-[#0284c7]"
         } flex flex-col justify-start items-start`}
       >
@@ -83,23 +86,34 @@ export default function FirstBlock({
           </motion.div>
         ))}
       </div>
+      <p className={`${secondFont.className} text-sm my-2 w-full md:w-2/3`}>
+        I&apos;m Frontend Developer with{" "}
+        <span className="text-[#38bdf8]">4+ years</span> of expertise in
+        building enterprise applications using{" "}
+        <span className="text-[#38bdf8]">React</span>,{" "}
+        <span className="text-[#38bdf8]">Next.js</span> and{" "}
+        <span className="text-[#38bdf8]">TypeScript</span>. Proficient in the
+        full development cycle, from architectural design to final release.
+      </p>
       <div className={`${secondFont.className} self-start py-10 md:py-5`}>
         <div className={`relative whitespace-nowrap`}>
           <p
             ref={firstText}
-            className="relative m-0 text-[30px] md:text-[70px] pr-[50px]"
+            className="relative m-0 text-3xl md:text-4xl pr-10"
           >
-            Frontend developer React NextJS TypeScript{" "}
+            Frontend developer React NextJS TypeScript Frontend developer React
+            NextJS TypeScript{" "}
           </p>
           <p
             ref={secondText}
-            className="absolute m-0 text-[30px] md:text-[70px] pr-[50px] left-full top-0"
+            className="absolute m-0 text-3xl md:text-4xl pr-10 left-full top-0"
           >
-            Frontend developer React NextJS TypeScript{" "}
+            Frontend developer React NextJS TypeScript Frontend developer React
+            NextJS TypeScript{" "}
           </p>
         </div>
       </div>
-      <div ref={scope} className="py-10">
+      <div ref={scope} className="py-2 self-center">
         <motion.button
           onClick={onButtonClick}
           whileTap={{ scale: 0.8 }}
