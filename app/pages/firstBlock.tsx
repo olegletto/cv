@@ -40,8 +40,10 @@ export default function FirstBlock({
       [".letter", { y: 0 }, { duration: 0.000001, at: "<" }],
     ]);
     const link = document.createElement("a");
-    link.href = "/Oleg Labunin CV.pdf";
-    link.download = "Oleg Labunin CV.pdf";
+    link.href =
+      "https://drive.google.com/file/d/1G-rlwAVgCrNUQnvM-tRErdsZXNPW5SLr/view?usp=sharing";
+
+    link.target = "_blank";
     link.click();
   };
   return (
@@ -117,14 +119,10 @@ export default function FirstBlock({
         <motion.button
           onClick={onButtonClick}
           whileTap={{ scale: 0.8 }}
-          whileHover={
-            isDark
-              ? { scale: 1.05, color: "#38bdf8" }
-              : { scale: 1.05, color: "#0284c7" }
-          }
+          whileHover={{ scale: 1.05 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
           className={`rounded-full border px-6 py-2 cursor-pointer ${secondFont.className}`}
         >
           <span className="sr-only">Download CV</span>
