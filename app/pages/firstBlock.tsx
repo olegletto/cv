@@ -34,6 +34,13 @@ export default function FirstBlock({
     requestAnimationFrame(animation);
   }, []);
 
+  const handleHover = () => {
+    animate([
+      [".letter", { y: -32 }, { duration: 0.2, delay: stagger(0.05) }],
+      [".letter", { y: 0 }, { duration: 0.000001, at: "<" }],
+    ]);
+  };
+
   const onButtonClick = () => {
     animate([
       [".letter", { y: -32 }, { duration: 0.2, delay: stagger(0.05) }],
@@ -120,6 +127,7 @@ export default function FirstBlock({
           onClick={onButtonClick}
           whileTap={{ scale: 0.8 }}
           whileHover={{ scale: 1.05 }}
+          onMouseEnter={() => handleHover()}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
