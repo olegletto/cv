@@ -80,7 +80,7 @@ export default function FirstBlock({
             {word.split("").map((letter, index) => (
               <motion.span
                 key={index}
-                className={`inline-block letter py-4`}
+                className={`inline-block letter py-2`}
                 initial={{ y: 150 }}
                 animate={{ y: 0 }}
                 transition={{

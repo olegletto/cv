@@ -17,9 +17,11 @@ export default function Header({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -100 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full flex items-center justify-between py-2 px-4 md:px-10 ${
-        isDark ? "shadow-md shadow-gray-500" : "shadow-md shadow-gray-300"
-      } shadow- ${font.className}`}
+      className={`fixed top-0 w-full flex items-center justify-between py-2 px-4 md:px-10 z-50 ${
+        isDark
+          ? "bg-[#0f172a]  text-[#f8fafc] shadow-md shadow-gray-500"
+          : "bg-[#f8fafc] text-[#94a3b8] shadow-md shadow-gray-300"
+      } ${font.className}`}
     >
       <div className="text-xl font-bold">OLEG LABUNIN</div>
       <nav>
