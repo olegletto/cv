@@ -131,7 +131,7 @@ export default function FirstBlock({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className={`rounded-full border px-6 py-2 cursor-pointer ${secondFont.className}`}
+          className={`rounded-full border hover:border-[#38bdf8] hover:text-[#38bdf8] px-6 py-2 cursor-pointer ${secondFont.className}`}
         >
           <span className="sr-only">Download CV</span>
           <span className="block h-8 overflow-hidden" aria-hidden>
