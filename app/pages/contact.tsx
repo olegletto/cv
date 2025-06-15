@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { NextFont } from "next/dist/compiled/@next/font";
+import STButton from "../shared/stbutton";
 import {
   PiGithubLogoLight,
   PiLinkedinLogoLight,
@@ -14,6 +15,12 @@ export default function Contact({
   secondFont: NextFont;
   isDark: boolean;
 }) {
+  const handleButtonClick = () => {
+    const link = document.createElement("a");
+    link.href = "mailto:olegletto@gmail.com";
+    link.target = "_blank";
+    link.click();
+  };
   return (
     <section
       id="contact"
@@ -28,16 +35,12 @@ export default function Contact({
           "Ready to discuss your next project? I'd love to hear from you. Let's create something amazing together."
         }
       </p>
-      <motion.a href="mailto:olegletto@gmail.com">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.3 }}
-          className=" w-40 h-14 my-4 text-sm rounded-md border hover:border-[#38bdf8] hover:text-[#38bdf8] focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-accent cursor-pointer"
-        >
-          Mail Me
-        </motion.button>
-      </motion.a>
+      <STButton
+        label="Mail_Me"
+        font={secondFont}
+        handleButtonClick={handleButtonClick}
+      />
+
       <div className="flex items-center justify-center w-full py-6 gap-4">
         <motion.a
           whileHover={{ y: -10 }}

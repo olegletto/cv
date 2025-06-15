@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, stagger, useAnimate } from "motion/react";
+import { motion } from "motion/react";
 import { NextFont } from "next/dist/compiled/@next/font";
+import STButton from "../shared/stbutton";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 
@@ -14,8 +15,6 @@ export default function FirstBlock({
   secondFont: NextFont;
   isDark: boolean;
 }) {
-  const [scope, animate] = useAnimate();
-
   const firstText = useRef<HTMLDivElement>(null);
   const secondText = useRef<HTMLDivElement>(null);
   let xPercent = 0;
@@ -34,18 +33,7 @@ export default function FirstBlock({
     requestAnimationFrame(animation);
   }, []);
 
-  const handleHover = () => {
-    animate([
-      [".letter", { y: -32 }, { duration: 0.2, delay: stagger(0.05) }],
-      [".letter", { y: 0 }, { duration: 0.000001, at: "<" }],
-    ]);
-  };
-
   const onButtonClick = () => {
-    animate([
-      [".letter", { y: -32 }, { duration: 0.2, delay: stagger(0.05) }],
-      [".letter", { y: 0 }, { duration: 0.000001, at: "<" }],
-    ]);
     const link = document.createElement("a");
     link.href =
       "https://drive.google.com/file/d/1G-rlwAVgCrNUQnvM-tRErdsZXNPW5SLr/view?usp=sharing";
@@ -122,36 +110,11 @@ export default function FirstBlock({
           </p>
         </div>
       </div>
-      <div ref={scope} className="py-2 self-center">
-        <motion.button
-          onClick={onButtonClick}
-          whileTap={{ scale: 0.8 }}
-          whileHover={{ scale: 1.05 }}
-          onMouseEnter={() => handleHover()}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className={`rounded-full border hover:border-[#38bdf8] hover:text-[#38bdf8] px-6 py-2 cursor-pointer ${secondFont.className}`}
-        >
-          <span className="sr-only">Download CV</span>
-          <span className="block h-8 overflow-hidden" aria-hidden>
-            {["D", "O", "W", "N", "L", "O", "A", "D", " _", "C", "V"].map(
-              (letter, index) => (
-                <motion.span
-                  data-letter={letter}
-                  className="letter inline-block relative h-8 leading-8 after:absolute after:left-0 after:top-full after:h-8 after:content-[attr(data-letter)]"
-                  key={index}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  {letter}
-                </motion.span>
-              )
-            )}
-          </span>
-        </motion.button>
-      </div>
+      <STButton
+        label="DOWNLOAD_CV"
+        font={secondFont}
+        handleButtonClick={onButtonClick}
+      />
     </motion.section>
   );
 }
