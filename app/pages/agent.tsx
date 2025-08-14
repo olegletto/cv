@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { NextFont } from "next/dist/compiled/@next/font";
 import { getExperienceContext } from "../shared/experience";
 import STButton from "../shared/stbutton";
-import { AIService } from "../shared/ai-service";
 
 interface Message {
   id: string;
@@ -28,9 +27,6 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const experienceContext = getExperienceContext();
-  
-  // Initialize AI service
-  const aiService = new AIService(process.env.NEXT_PUBLIC_OPENAI_API_KEY || '');
 
 
   const scrollToBottom = () => {
@@ -46,9 +42,24 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
 
   const generateAIResponse = async (userQuestion: string): Promise<string> => {
     try {
-      // Use real AI service
-      const response = await aiService.generateResponse(userQuestion, experienceContext);
-      return response;
+      // Use API route instead of direct AI service
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userQuestion,
+          experienceContext,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.response;
     } catch (error) {
       console.error('AI Service Error:', error);
       // Fallback to simple responses if AI is unavailable
