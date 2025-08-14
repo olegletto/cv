@@ -37,6 +37,8 @@ const STButton: React.FC<STButtonProps> = ({
   return (
     <div ref={scope} className="py-2 self-center">
       <motion.button
+        role="button"
+        aria-label={label}
         onClick={onButtonClick}
         whileTap={{ scale: 0.8 }}
         whileHover={{ scale: 1.05 }}

@@ -12,6 +12,7 @@ import WelcomePage from "./pages/welcomePage";
 import FirstBlock from "./pages/firstBlock";
 import Header from "./pages/header";
 import Contact from "./pages/contact";
+import AgentPage from "./pages/agent";
 
 // const quicksand = Quicksand({ subsets: ["latin"], weight: "400" });
 const passion = Passion_One({ subsets: ["latin"], weight: "400" });
@@ -44,6 +45,7 @@ export default function Home() {
             secondFont={victorMono}
             isDark={isDark}
           />
+          <AgentPage firstFont={syncopate} secondFont={victorMono} isDark={isDark}/>
           <Contact secondFont={victorMono} isDark={isDark} />
         </>
       )}
