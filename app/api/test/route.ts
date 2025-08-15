@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function GET(_request: NextRequest) {
   return NextResponse.json({ 
     message: 'API is working!',
     timestamp: new Date().toISOString(),
@@ -16,7 +17,8 @@ export async function POST(request: NextRequest) {
       receivedData: body,
       timestamp: new Date().toISOString()
     });
-  } catch (error) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_error) {
     return NextResponse.json({ 
       error: 'Failed to parse JSON',
       timestamp: new Date().toISOString()
