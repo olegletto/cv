@@ -176,7 +176,7 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
   };
 
   return (
-    <div className={`h-screen flex flex-col mt-10 py-20 px-10 ${secondFont.className} ${isDark ? "bg-[#182543] text-[#f8fafc]" : "bg-[#fcfcfc] text-[#1e293b]"}`}>
+    <div className={`h-screen flex flex-col pt-20 pb-10 px-10 ${secondFont.className} ${isDark ? "bg-[#182543] text-[#f8fafc]" : "bg-[#fcfcfc] text-[#1e293b]"}`}>
       {/* Header */}
       <motion.div 
         className="flex-shrink-0  border-b border-gray-200 dark:border-gray-700"
@@ -185,7 +185,7 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
         transition={{ duration: 0.5 }}
       >
         <div className="flex items-center justify-center">
-          <h1 className={`text-3xl font-bold ${firstFont.className} ${isDark ? "text-[#38bdf8]" : "text-[#005670]"}`}>
+          <h1 className={`text-3xl font-bold ${firstFont.className} bg-gradient-to-r from-blue-500 via-green-500 to-purple-600 bg-clip-text text-transparent mb-4`}>
             Ask <strong>AI agent</strong> about my experience
           </h1>
         </div>

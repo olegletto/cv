@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  // Quicksand,
+  Quicksand,
   Passion_One,
   Syncopate,
   Inter,
@@ -14,7 +14,7 @@ import Header from "./pages/header";
 import Contact from "./pages/contact";
 import AgentPage from "./pages/agent";
 
-// const quicksand = Quicksand({ subsets: ["latin"], weight: "400" });
+const quicksand = Quicksand({ subsets: ["latin"], weight: "400" });
 const passion = Passion_One({ subsets: ["latin"], weight: "400" });
 const syncopate = Syncopate({ subsets: ["latin"], weight: "400" });
 const interBold = Inter({ subsets: ["latin"], weight: "900" });
@@ -46,7 +46,7 @@ export default function Home() {
             isDark={isDark}
           />
           <AgentPage
-            firstFont={interBold}
+            firstFont={quicksand}
             secondFont={victorMono}
             isDark={isDark}
           />
