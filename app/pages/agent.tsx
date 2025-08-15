@@ -176,7 +176,7 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
   };
 
   return (
-    <div className={`h-screen flex flex-col pt-20 pb-10 px-10 ${secondFont.className} ${isDark ? "bg-[#182543] text-[#f8fafc]" : "bg-[#fcfcfc] text-[#1e293b]"}`}>
+    <div className={`h-screen flex flex-col pt-20 pb-10 px-4 md:px-10 ${secondFont.className} ${isDark ? "bg-[#182543] text-[#f8fafc]" : "bg-[#fcfcfc] text-[#1e293b]"}`}>
       {/* Header */}
       <motion.div 
         className="flex-shrink-0  border-b border-gray-200 dark:border-gray-700"
@@ -193,7 +193,7 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
 
       {/* Chat area */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto p-6 space-y-4">
+        <div className="h-full overflow-y-auto py-4 px-1 md:p-6 space-y-4">
           <AnimatePresence>
             {messages.map((message) => (
               <motion.div
@@ -246,7 +246,7 @@ const AgentPage: React.FC<AgentPageProps> = ({ firstFont, secondFont, isDark }) 
 
       {/* Input field */}
       <motion.div 
-        className="flex-shrink-0 p-6 border-t border-gray-200 dark:border-gray-700"
+        className="flex-shrink-0 py-4 px-1 md:p-6 border-t border-gray-200 dark:border-gray-700"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}

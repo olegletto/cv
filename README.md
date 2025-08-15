@@ -1,1 +1,1 @@
-# https://olegletto.github.io/cv/
+# https://oleglabunin.vercel.app/
