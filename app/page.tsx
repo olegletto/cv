@@ -45,6 +45,11 @@ export default function Home() {
             secondFont={victorMono}
             isDark={isDark}
           />
+          <AgentPage
+            firstFont={interBold}
+            secondFont={victorMono}
+            isDark={isDark}
+          />
           <Contact secondFont={victorMono} isDark={isDark} />
         </>
       )}

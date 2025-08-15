@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const { userQuestion, experienceContext } = await request.json();
     
-    // Используем серверную переменную окружения (без NEXT_PUBLIC_)
+    // Use server environment variable (without NEXT_PUBLIC_)
     const apiKey = process.env.OPENAI_API_KEY;
     
     if (!apiKey) {
