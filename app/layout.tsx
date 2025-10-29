@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
+import AdscoreScript from "./AdscoreScript";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,21 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          async
-          id="adscore-script"
-          src="//c.adsco.re"
-          strategy="beforeInteractive"
-          onLoad={() => {
-            // вызываем AdscoreInit после загрузки скрипта
-            if (typeof window !== "undefined") {
-              // @ts-expect-error — API появляется после загрузки
-              AdscoreInit("QmY1BQAAAAAARkuLO91eVKuZ0HPPbeqUIFpTAvY", {
-                async_callback: 1,
-              });
-            }
-          }}
-        ></Script>
+        <AdscoreScript />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
