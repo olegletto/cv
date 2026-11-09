@@ -1,4 +1,10 @@
-// Service for working with OpenAI GPT API
+const DEFAULT_MODEL = 'gpt-5.5';
+const FALLBACK_MODEL = 'gpt-4o';
+
+function isReasoningModel(model: string): boolean {
+  return /^(gpt-5|o\d)/.test(model);
+}
+
 export class AIService {
   private apiKey: string;
   private baseUrl = 'https://api.openai.com/v1/chat/completions';
@@ -7,45 +13,51 @@ export class AIService {
     this.apiKey = apiKey;
   }
 
-  async generateResponse(userQuestion: string, experienceContext: string): Promise<string> {
-    try {
-      const response = await fetch(this.baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: `You are an AI assistant that answers questions about a candidate based on their resume and experience. 
-              Use only information from the provided context. 
-              Respond in the language of the request, be friendly and professional.
-              
-              Candidate context:
-              ${experienceContext}`
-            },
-            {
-              role: 'user',
-              content: userQuestion
-            }
-          ],
-          max_tokens: 500,
-          temperature: 0.7,
-        }),
-      });
+  private request(model: string, prompt: string): Promise<Response> {
+    const messages = [
+      {
+        role: 'system',
+        content:
+          'You are an award-winning web designer. Reply with raw CSS only. No markdown, no comments, no explanation.',
+      },
+      { role: 'user', content: prompt },
+    ];
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    const body = isReasoningModel(model)
+      ? {
+          model,
+          messages,
+          max_completion_tokens: 8000,
+          reasoning_effort: process.env.OPENAI_DESIGN_REASONING || 'low',
+          stream: true,
+        }
+      : {
+          model,
+          messages,
+          max_tokens: 4000,
+          temperature: 1,
+          stream: true,
+        };
 
-      const data = await response.json();
-      return data.choices[0].message.content;
-    } catch (error) {
-      console.error('Error calling OpenAI API:', error);
-      throw new Error('Failed to get response from AI. Please try again later.');
+    return fetch(this.baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  async streamDesign(prompt: string): Promise<Response> {
+    const model = process.env.OPENAI_DESIGN_MODEL || DEFAULT_MODEL;
+    const response = await this.request(model, prompt);
+
+    // The key may have no access to the preferred model: retry once on the fallback.
+    if ((response.status === 400 || response.status === 404) && model !== FALLBACK_MODEL) {
+      console.error(`Model ${model} rejected (${response.status}), falling back to ${FALLBACK_MODEL}`);
+      return this.request(FALLBACK_MODEL, prompt);
     }
+    return response;
   }
 }

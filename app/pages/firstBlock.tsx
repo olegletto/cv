@@ -85,7 +85,7 @@ export default function FirstBlock({
       </div>
       <p className={`${secondFont.className} text-sm my-2 w-full md:w-2/3`}>
         I&apos;m Frontend Developer with{" "}
-        <span className="text-[#38bdf8]">5 years</span> of expertise in building
+        <span className="text-[#38bdf8]">6 years</span> of expertise in building
         enterprise applications using{" "}
         <span className="text-[#38bdf8]">React</span>,{" "}
         <span className="text-[#38bdf8]">Next.js</span> and{" "}

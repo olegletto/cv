@@ -1,34 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-  Quicksand,
-  Passion_One,
-  Syncopate,
-  Inter,
-  Victor_Mono,
-} from "next/font/google";
-import WelcomePage from "./pages/welcomePage";
+import { useState } from "react";
+import { Syncopate, Inter, Victor_Mono } from "next/font/google";
 import FirstBlock from "./pages/firstBlock";
 import Header from "./pages/header";
 import Contact from "./pages/contact";
-import AgentPage from "./pages/agent";
+import CreateSite from "./pages/createSite";
 
-const quicksand = Quicksand({ subsets: ["latin"], weight: "400" });
-const passion = Passion_One({ subsets: ["latin"], weight: "400" });
 const syncopate = Syncopate({ subsets: ["latin"], weight: "400" });
 const interBold = Inter({ subsets: ["latin"], weight: "900" });
 const victorMono = Victor_Mono({ subsets: ["latin"], weight: "600" });
 
 export default function Home() {
   const [isDark, setIsDark] = useState(true);
-  const [showWelcomePage, setShowWelcomePage] = useState(false);
+  const [fallbackNote, setFallbackNote] = useState<string | null>(null);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowWelcomePage(false);
-    }, 7000);
-  }, []);
+  if (!fallbackNote) {
+    return <CreateSite onFallback={setFallbackNote} />;
+  }
 
   return (
     <main
@@ -36,23 +25,19 @@ export default function Home() {
         isDark ? "bg-[#0f172a]  text-[#f8fafc]" : "bg-[#f8fafc] text-[#94a3b8]"
       } ${syncopate.className}`}
     >
-      {showWelcomePage && <WelcomePage font={passion} />}
-      {!showWelcomePage && (
-        <>
-          <Header font={syncopate} isDark={isDark} setIsDark={setIsDark} />
-          <FirstBlock
-            firstFont={interBold}
-            secondFont={victorMono}
-            isDark={isDark}
-          />
-          <AgentPage
-            firstFont={quicksand}
-            secondFont={victorMono}
-            isDark={isDark}
-          />
-          <Contact secondFont={victorMono} isDark={isDark} />
-        </>
-      )}
+      <Header font={syncopate} isDark={isDark} setIsDark={setIsDark} />
+      <p
+        role="status"
+        className="relative z-[70] mx-auto mt-16 max-w-xl rounded-md bg-[#111] px-3 py-2 text-center font-sans text-xs text-white shadow-lg"
+      >
+        {fallbackNote}
+      </p>
+      <FirstBlock
+        firstFont={interBold}
+        secondFont={victorMono}
+        isDark={isDark}
+      />
+      <Contact secondFont={victorMono} isDark={isDark} />
     </main>
   );
 }
