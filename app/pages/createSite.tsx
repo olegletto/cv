@@ -59,6 +59,7 @@ const GUARD_CSS = `
 #site{padding-bottom:max(6rem,env(safe-area-inset-bottom,0px)) !important;overflow-x:hidden !important}
 #site .wrap{position:relative;z-index:1}
 #ui[data-state="designing"] #build,#ui[data-state="done"] #build{font-size:.8rem;padding:.75rem 1.1rem}
+#ui[data-exhausted] #build{max-width:11.5rem;white-space:normal;line-height:1.25;text-align:center;cursor:pointer}
 #site .deco{pointer-events:none}
 #site .link{width:auto !important;height:auto !important;max-width:100% !important;overflow:visible !important;white-space:nowrap}
 `;
@@ -68,7 +69,11 @@ const CV_URL =
 
 type UiState = "idle" | "designing" | "done";
 
-function fallbackMessage(code: string): string {
+const EXHAUSTED_LABEL = "Attempts used up · contact me ↓";
+
+function fallbackMessage(code: string, limit: number): string {
+  if (code === "limit")
+    return `Daily limit reached (${limit} ${limit === 1 ? "site" : "sites"} per day). You can contact me below.`;
   if (code === "quota") return "API limit reached. Showing the current design.";
   if (code === "rate_limited") return "Too many requests. Showing the current design.";
   if (code === "empty") return "Could not assemble the site. Showing the current design.";
@@ -252,6 +257,8 @@ export default function CreateSite({
   const [progress, setProgress] = useState(0);
   const [repairLevel, setRepairLevel] = useState(0);
   const [checkTick, setCheckTick] = useState(0);
+  const [remaining, setRemaining] = useState<number | null>(null);
+  const [limit, setLimit] = useState(3);
   const pendingRef = useRef("");
   const rafRef = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
@@ -266,6 +273,27 @@ export default function CreateSite({
       abortRef.current?.abort();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
+  }, []);
+
+  // Ask the server how many attempts this visitor has left today.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/design", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { remaining?: number; limit?: number } | null) => {
+        if (cancelled || !data || typeof data.remaining !== "number") return;
+        const total = typeof data.limit === "number" ? data.limit : 3;
+        setLimit(total);
+        setRemaining(data.remaining);
+        if (data.remaining <= 0) {
+          onFallback(fallbackMessage("limit", total));
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // After a build finishes, escalate repairs until no text blocks overlap.
@@ -368,6 +396,10 @@ export default function CreateSite({
       if (!response.ok) throw new Error(await readErrorCode(response));
       if (!response.body) throw new Error("unavailable");
 
+      const header = response.headers.get("x-attempts-remaining");
+      const left = header === null ? null : Number(header);
+      if (left !== null && !Number.isNaN(left)) setRemaining(left);
+
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let accumulated = "";
@@ -395,13 +427,21 @@ export default function CreateSite({
       setUiState("done");
       setMessage("");
       setTail("");
-      setLabel("Create again");
+      setLabel(
+        left === 0
+          ? EXHAUSTED_LABEL
+          : left !== null && !Number.isNaN(left)
+            ? `Create again · ${left} left`
+            : "Create again",
+      );
       requestAnimationFrame(() => requestAnimationFrame(fixContrast));
     } catch (error) {
       if (!mountedRef.current || isAbort(error)) return;
       const code = error instanceof Error ? error.message : "unavailable";
-      const known = ["quota", "rate_limited", "unavailable", "empty"];
-      onFallback(fallbackMessage(known.includes(code) ? code : "unavailable"));
+      const known = ["limit", "quota", "rate_limited", "unavailable", "empty"];
+      onFallback(
+        fallbackMessage(known.includes(code) ? code : "unavailable", limit),
+      );
     } finally {
       busyRef.current = false;
       if (mountedRef.current) setBusy(false);
@@ -502,11 +542,22 @@ export default function CreateSite({
           </section>
         </main>
       </div>
-      <div id="ui" data-state={uiState}>
+      <div
+        id="ui"
+        data-state={uiState}
+        data-exhausted={remaining === 0 && uiState === "done" ? "" : undefined}
+      >
         <button
           id="build"
           type="button"
-          onClick={build}
+          onClick={
+            remaining === 0 && uiState === "done"
+              ? () =>
+                  document
+                    .getElementById("contact")
+                    ?.scrollIntoView({ behavior: "smooth", block: "center" })
+              : build
+          }
           disabled={busy}
           aria-busy={busy}
         >

@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AIService } from '../../shared/ai-service';
 import { makeDesignPrompt } from '../../shared/design-prompt';
+import {
+  DAILY_LIMIT,
+  consumeAttempt,
+  refundAttempt,
+  remainingAttempts,
+} from '../../shared/rate-limit';
 
 export const dynamic = 'force-dynamic';
-
-const WINDOW_MS = 60 * 60 * 1000;
-const MAX_REQUESTS = 20;
-const hits = new Map<string, number[]>();
 
 function clientIp(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
@@ -15,18 +17,6 @@ function clientIp(request: NextRequest): string {
     request.headers.get('x-real-ip') ||
     'local'
   );
-}
-
-function allowRequest(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((time) => now - time < WINDOW_MS);
-  if (recent.length >= MAX_REQUESTS) {
-    hits.set(ip, recent);
-    return false;
-  }
-  recent.push(now);
-  hits.set(ip, recent);
-  return true;
 }
 
 function errorResponse(error: string, status: number) {
@@ -47,10 +37,16 @@ function chunkText(payload: string): string {
   }
 }
 
+export async function GET(request: NextRequest) {
+  const remaining = await remainingAttempts(clientIp(request));
+  return NextResponse.json(
+    { remaining, limit: DAILY_LIMIT },
+    { headers: { 'Cache-Control': 'no-store' } },
+  );
+}
+
 export async function POST(request: NextRequest) {
-  if (!allowRequest(clientIp(request))) {
-    return errorResponse('rate_limited', 429);
-  }
+  const ip = clientIp(request);
 
   const apiKey =
     process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
@@ -59,11 +55,17 @@ export async function POST(request: NextRequest) {
     return errorResponse('unavailable', 500);
   }
 
+  const attempt = await consumeAttempt(ip);
+  if (!attempt.allowed) {
+    return errorResponse('limit', 429);
+  }
+
   let upstream: Response;
   try {
     upstream = await new AIService(apiKey).streamDesign(makeDesignPrompt());
   } catch (error) {
     console.error('Design API request failed:', error);
+    await refundAttempt(ip);
     return errorResponse('unavailable', 502);
   }
 
@@ -72,6 +74,7 @@ export async function POST(request: NextRequest) {
     const quota =
       upstream.status === 429 || /insufficient_quota|rate_limit/i.test(errText);
     console.error('Design API error:', upstream.status);
+    await refundAttempt(ip);
     return errorResponse(quota ? 'quota' : 'unavailable', quota ? 429 : 502);
   }
 
@@ -124,6 +127,7 @@ export async function POST(request: NextRequest) {
       'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'no-cache, no-transform',
       'X-Accel-Buffering': 'no',
+      'X-Attempts-Remaining': String(attempt.remaining),
     },
   });
 }
